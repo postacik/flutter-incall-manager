@@ -393,7 +393,11 @@ public class AppRTCBluetoothManager {
   }
 
   protected void unregisterReceiver(BroadcastReceiver receiver) {
-    apprtcContext.unregisterReceiver(receiver);
+    try {
+      apprtcContext.unregisterReceiver(receiver);     
+    } catch (Exception e) {
+      //AUZ: patch
+    }
   }
 
   protected boolean getBluetoothProfileProxy(

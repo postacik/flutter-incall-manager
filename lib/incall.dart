@@ -3,16 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'flutter_incall_manager.dart';
 
-enum MediaType {
-  AUDIO,
-  VIDEO
-}
+enum MediaType { AUDIO, VIDEO }
 
-enum ForceSpeakerType {
-  DEFAULT,
-  FORCE_ON,
-  FORCE_OFF
-}
+enum ForceSpeakerType { DEFAULT, FORCE_ON, FORCE_OFF }
 
 class IncallManager {
   MethodChannel _channel = Incall.methodChannel();
@@ -30,9 +23,15 @@ class IncallManager {
   }
 
   //Start InCallManager
-  Future<void> start({bool auto = true, MediaType media = MediaType.AUDIO, String ringback}) async {
-    await _channel.invokeMethod('start',
-        <String, dynamic>{'media': media == MediaType.AUDIO ? 'audio' : 'video', 'auto': auto, 'ringback': ringback});
+  Future<void> start(
+      {bool auto = true,
+      MediaType media = MediaType.AUDIO,
+      String ringback}) async {
+    await _channel.invokeMethod('start', <String, dynamic>{
+      'media': media == MediaType.AUDIO ? 'audio' : 'video',
+      'auto': auto,
+      'ringback': ringback
+    });
   }
 
   //Stop InCallManager
@@ -57,9 +56,13 @@ class IncallManager {
    * 1: force speaker on
    * -1: force speaker off
    */
-  Future<void> setForceSpeakerphoneOn({ForceSpeakerType flag = ForceSpeakerType.DEFAULT}) async {
-    await _channel.invokeMethod(
-        'setForceSpeakerphoneOn', <String, dynamic>{'flag': flag == ForceSpeakerType.DEFAULT ? 0 : (flag == ForceSpeakerType.FORCE_ON ? 1 : -1)});
+  Future<void> setForceSpeakerphoneOn(
+      {ForceSpeakerType flag = ForceSpeakerType.DEFAULT}) async {
+    await _channel.invokeMethod('setForceSpeakerphoneOn', <String, dynamic>{
+      'flag': flag == ForceSpeakerType.DEFAULT
+          ? 0
+          : (flag == ForceSpeakerType.FORCE_ON ? 1 : -1)
+    });
   }
 
   Future<void> setMicrophoneMute(enable) async {
@@ -202,7 +205,7 @@ class IncallManager {
         break;
       case 'onAudioFocusChange':
         String eventText = map['eventText'];
-        bool eventCode = map['eventCode'];
+        int eventCode = map['eventCode'];
         break;
       case 'onAudioDeviceChanged':
         String availableAudioDeviceList = map['availableAudioDeviceList'];
